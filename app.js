@@ -9,6 +9,7 @@ const path = require('path');
 const { body, validationResult } = require('express-validator');
 const { connectDB } = require("./db/connection");
 const User = require('./models/user');
+const Admin = require('./models/admin');
 
 const app = express();
 const PORT = 3000;
@@ -24,7 +25,7 @@ const isAdmin = (req, res, next) => {
   }
 
 
-  if (admins.includes(user.id)) {
+  if (Admin.includes(user.id)) {
     req.userRole = 'Admin';
     return next();
   } else {
@@ -99,23 +100,24 @@ app.post('/createAdmin', async (req, res) => {
     const { email, password } = req.body;
 
     // Check if the user already exists
-    if (User.some(user => user.email === email)) {
-      return res.status(409).json({ error: 'User already exists.' });
-    }
+const existingAdmin = await Admin.findOne({ email: email });
+
+if (existingAdmin) {
+  return res.status(409).json({ error: 'Admin already exists.' });
+}
 
     // Encrypt the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new admin
-    const newAdmin = {
-      id: Math.random().toString(36).substr(2, 9), // Generate a random ID for the admin
+    const newAdmin = new Admin({
       email,
       password: hashedPassword,
-      role: 'Admin',
-    };
+      // Add other admin-specific fields here
+    });
 
     // Store the admin in your database or in-memory storage
-    admins.push(newAdmin);
+    await newAdmin.save();
 
     return res.status(201).json({ message: 'Admin created successfully.' });
   } catch (error) {
@@ -129,7 +131,7 @@ app.post('/createAdmin', async (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     const { emailOrPhone, password } = req.body;
-    const user = findUser(emailOrPhone);
+    const user = await Admin.findOne({ $or: [{ email: emailOrPhone }, { phone: emailOrPhone }] });
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -142,7 +144,7 @@ app.post('/login', async (req, res) => {
 
     const token = generateToken(user.id, user.role);
 
-    return res.status(200).json({ message: 'Login successful' });
+    return res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal Server Error' });
