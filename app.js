@@ -124,13 +124,6 @@ app.post('/createAdmin', async (req, res) => {
   }
 });
 
-app.get('/adminDetails', isAdmin, (req, res) => {
-  return res.status(200).json({ message: 'Admin details accessed successfully' });
-});
-
-app.get('/userDetails/:userId', isOwner, (req, res) => {
-  return res.status(200).json({ message: 'User details accessed successfully' });
-});
 
 
 app.post('/login', async (req, res) => {
@@ -156,10 +149,59 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.put('/modify/:userId', isOwner, async (req, res) => {
+app.post('/signup', async (req, res) => {
+  try {
+    const { email, phone, name, profileImage, password } = req.body;
+
+    // Ensure at least one of email or phone is provided
+    if (!email && !phone) {
+      return res.status(400).json({ error: 'At least one of email or phone must be provided.' });
+    }
+
+    // Check if the user already exists
+    if (users.some(user => user.email === email || user.phone === phone)) {
+      return res.status(409).json({ error: 'User already exists.' });
+    }
+
+    // Encrypt the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const newUser = {
+      email,
+      phone,
+      name,
+      profileImage,
+      password: hashedPassword,
+    };
+
+    // Store the user in your database or in-memory storage
+    User.push(newUser);
+
+    return res.status(201).json({ message: 'User created successfully.' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/users', isAdmin ,async (req, res) => {
+  try {
+    // Fetch all users from the database
+    const users = await User.find({}, { password: 0 }); // Exclude the password field
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+app.put('/modify/:userId',isAdmin, isOwner, async (req, res) => {
   try {
     const { name, profileImage } = req.body;
-    const user = users.find(u => u.id === req.params.userId);
+    const user = User.find(u => u.id === req.params.userId);
     user.name = name;
     user.profileImage = profileImage;
 
@@ -174,7 +216,7 @@ const findUser = (emailOrPhone) => {
   return User.find(user => user.email === emailOrPhone || user.phone === emailOrPhone);
 };
 
-app.delete('/delete/:userId', isOwner, (req, res) => {
+app.delete('/delete/:userId', isAdmin, isOwner, (req, res) => {
   try {
     const userIndex = User.findIndex(u => u.id === req.params.userId);
 
