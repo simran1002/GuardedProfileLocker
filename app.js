@@ -4,49 +4,60 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
 const path = require('path');
 const { body, validationResult } = require('express-validator');
 const { connectDB } = require("./db/connection");
 const User = require('./models/user');
 const Admin = require('./models/admin');
+const multer = require('multer');
+const storage = require('./db/cloudinary');
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-const isAdmin = (req, res, next) => {
-  const userId = req.params.userId; 
-  const user = User.find(u => u.id === userId);
+const isAdmin = async (req, res, next) => {
+  const userId = req.params.userId;
 
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
+  try {
+    const user = await User.findById(userId);
 
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-  if (Admin.includes(user.id)) {
-    req.userRole = 'Admin';
-    return next();
-  } else {
-    return res.status(403).json({ error: 'Permission denied. Admin access required.' });
+    if (user.role === 'Admin') {
+      req.userRole = 'Admin';
+      return next();
+    } else {
+      return res.status(403).json({ error: 'Permission denied. Admin access required.' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 
-const isOwner = (req, res, next) => {
+const isOwner = async (req, res, next) => {
   const userId = req.params.userId;
-  const user = User.find(u => u.id === userId);
 
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
+  try {
+    const user = await User.findById(userId);
 
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-  if (req.userRole === 'Admin' || userId === req.user.id) {
-    return next();
-  } else {
-    return res.status(403).json({ error: 'Permission denied. You can only modify your own details.' });
+    if (req.userRole === 'Admin' || userId === req.user.id) {
+      return next();
+    } else {
+      return res.status(403).json({ error: 'Permission denied. You can only modify your own details.' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -56,21 +67,9 @@ const generateToken = (userId, role) => {
   return token;
 };
 
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/profile-images');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  },
-});
-
 const upload = multer({ storage });
 
-
-app.post('/uploadProfileImage/:userId', isOwner, upload.single('profileImage'), async (req, res) => {
+app.post('/uploadProfileImage/:userId', upload.single('profileImage'), async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
 
@@ -79,10 +78,8 @@ app.post('/uploadProfileImage/:userId', isOwner, upload.single('profileImage'), 
     }
 
     if (req.file) {
-      // Update the user's profile image URL in the database
       user.profileImage = req.file.path;
 
-      // Save the updated user to the database
       await user.save();
 
       return res.status(200).json({ message: 'Profile image uploaded successfully', imageUrl: req.file.path });
@@ -94,29 +91,25 @@ app.post('/uploadProfileImage/:userId', isOwner, upload.single('profileImage'), 
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-// Route to create an Admin
+
 app.post('/createAdmin', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if the user already exists
 const existingAdmin = await Admin.findOne({ email: email });
 
 if (existingAdmin) {
   return res.status(409).json({ error: 'Admin already exists.' });
 }
 
-    // Encrypt the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new admin
+
     const newAdmin = new Admin({
       email,
       password: hashedPassword,
-      // Add other admin-specific fields here
     });
 
-    // Store the admin in your database or in-memory storage
     await newAdmin.save();
 
     return res.status(201).json({ message: 'Admin created successfully.' });
@@ -125,8 +118,6 @@ if (existingAdmin) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
 
 app.post('/login', async (req, res) => {
   try {
@@ -151,34 +142,31 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/signup', async (req, res) => {
+app.post('/signup', isOwner, async (req, res) => {
   try {
     const { email, phone, name, profileImage, password } = req.body;
 
-    // Ensure at least one of email or phone is provided
     if (!email && !phone) {
       return res.status(400).json({ error: 'At least one of email or phone must be provided.' });
     }
 
-    // Check if the user already exists
-    if (users.some(user => user.email === email || user.phone === phone)) {
-      return res.status(409).json({ error: 'User already exists.' });
-    }
+   const existingUser = await User.findOne({ $or: [{ email: email }, { phone: phone }] });
 
-    // Encrypt the password
+   if (existingUser) {
+     return res.status(409).json({ error: 'User already exists.' });
+   }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user
-    const newUser = {
-      email,
-      phone,
-      name,
-      profileImage,
-      password: hashedPassword,
-    };
+const newUser = new User({
+  email,
+  phone,
+  name,
+  profileImage,
+  password: hashedPassword,
+});
 
-    // Store the user in your database or in-memory storage
-    User.push(newUser);
+await newUser.save();
 
     return res.status(201).json({ message: 'User created successfully.' });
   } catch (error) {
@@ -187,12 +175,11 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-app.get('/users', isAdmin ,async (req, res) => {
+app.get('/users', isOwner, async (req, res) => {
   try {
-    // Fetch all users from the database
-    const users = await User.find({}, { password: 0 }); // Exclude the password field
+    const users = await User.find({}, { password: 0 });
 
-    return res.status(200).json(users);
+    return res.status(200).json({ users });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal Server Error' });
@@ -200,12 +187,15 @@ app.get('/users', isAdmin ,async (req, res) => {
 });
 
 
-app.put('/modify/:userId',isAdmin, isOwner, async (req, res) => {
+app.put('/modify/:userId', isOwner, async (req, res) => {
   try {
     const { name, profileImage } = req.body;
-    const user = User.find(u => u.id === req.params.userId);
-    user.name = name;
-    user.profileImage = profileImage;
+
+    const user = await User.findByIdAndUpdate(req.params.userId, { name, profileImage }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
     return res.status(200).json({ message: 'User details modified successfully' });
   } catch (error) {
@@ -214,16 +204,12 @@ app.put('/modify/:userId',isAdmin, isOwner, async (req, res) => {
   }
 });
 
-const findUser = (emailOrPhone) => {
-  return User.find(user => user.email === emailOrPhone || user.phone === emailOrPhone);
-};
 
-app.delete('/delete/:userId', isAdmin, isOwner, (req, res) => {
+app.delete('/delete/:userId', isOwner, async (req, res) => {
   try {
-    const userIndex = User.findIndex(u => u.id === req.params.userId);
+    const deletedUser = await User.findOneAndDelete({ _id: req.params.userId });
 
-    if (userIndex !== -1) {
-      users.splice(userIndex, 1);
+    if (deletedUser) {
       return res.status(200).json({ message: 'User account deleted successfully' });
     } else {
       return res.status(404).json({ error: 'User not found' });

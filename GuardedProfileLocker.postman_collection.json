@@ -1,0 +1,656 @@
+{
+	"info": {
+		"_postman_id": "5321bb18-b7fa-4441-a6e4-ffa49339b0ac",
+		"name": "GuardedProfileLocker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24106690"
+	},
+	"item": [
+		{
+			"name": "Upload Profile image",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk5OTEzMjhhMDMzYWEzMzhjMDNjMzMiLCJpYXQiOjE3MDQ1NjM0OTMsImV4cCI6MTcwNDU2NzA5M30.y7SIHj_NW66nU9Mvc0Epa2vHUR0ifZ1KPEyUZTQYF6A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "profileImage",
+							"type": "file",
+							"src": "postman-cloud:///1eeacd2d-cfea-4690-bcee-538d43004d0f"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/uploadProfileImage/6599a5994e6c4dc2b4628a53",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"uploadProfileImage",
+						"6599a5994e6c4dc2b4628a53"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Upload Profile image",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profileImage",
+									"type": "file",
+									"src": "postman-cloud:///1eeaccc2-b3b8-4190-b8e5-e1379bad86a9"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/uploadProfileImage/6599a5994e6c4dc2b4628a53",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"uploadProfileImage",
+								"6599a5994e6c4dc2b4628a53"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "172"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"ac-Di/AGoWQfrdybJBEf+Ie4T6aAoE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 06 Jan 2024 19:47:09 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Profile image uploaded successfully\",\n    \"imageUrl\": \"https://res.cloudinary.com/dnmf0n6mi/image/upload/v1704570430/Guarded-Profile-Locker/f2trilleyfm4csgqrhgz.png\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"simranyadav464@gmail.com\",\r\n    \"password\": \"Sim10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/createAdmin",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"createAdmin"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"simranyadav464@gmail.com\",\r\n    \"password\": \"Sim10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/createAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"createAdmin"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "41"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"29-MDRDydOtNE8c5GOasj26wFV6epM\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 06 Jan 2024 17:43:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Admin created successfully.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"simranyadav464@gmail.com\",\r\n    \"password\": \"Sim10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"simranyadav464@gmail.com\",\r\n    \"password\": \"Sim10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "217"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d9-GcYW6h4EXQzaEXH/hq+nrgFP9Dw\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 06 Jan 2024 17:51:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Login successful\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk5OTEzMjhhMDMzYWEzMzhjMDNjMzMiLCJpYXQiOjE3MDQ1NjM0OTMsImV4cCI6MTcwNDU2NzA5M30.y7SIHj_NW66nU9Mvc0Epa2vHUR0ifZ1KPEyUZTQYF6A\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update the user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk5OTEzMjhhMDMzYWEzMzhjMDNjMzMiLCJpYXQiOjE3MDQ1NjM0OTMsImV4cCI6MTcwNDU2NzA5M30.y7SIHj_NW66nU9Mvc0Epa2vHUR0ifZ1KPEyUZTQYF6A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Aman Yadav\",\r\n    \"profileImage\": \"https://res.cloudinary.com/dnmf0n6mi/image/upload/v1704573249/Guarded-Profile-Locker/d5hf3xjs3yptba1gqyfm.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/modify/6599a5994e6c4dc2b4628a53",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"modify",
+						"6599a5994e6c4dc2b4628a53"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update the user",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Simran Yadav\",\r\n    \"profileImage\": \"vhfanvoewfijclapojdpo.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/modify/6599a5994e6c4dc2b4628a53",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"modify",
+								"6599a5994e6c4dc2b4628a53"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "48"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"30-E8SYzmvYMJJMD4rIV/hDMpZ1y2g\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 06 Jan 2024 19:15:26 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User details modified successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete the user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk5OTEzMjhhMDMzYWEzMzhjMDNjMzMiLCJpYXQiOjE3MDQ1NjM0OTMsImV4cCI6MTcwNDU2NzA5M30.y7SIHj_NW66nU9Mvc0Epa2vHUR0ifZ1KPEyUZTQYF6A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/delete/6599a1b285e2451a31c70b46",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"delete",
+						"6599a1b285e2451a31c70b46"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/delete/6599a1b285e2451a31c70b46",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"delete",
+								"6599a1b285e2451a31c70b46"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "47"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2f-n+J+hDfUOoeuJapko4ZZeGesCoQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 06 Jan 2024 19:09:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User account deleted successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Fetch users details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk5OTEzMjhhMDMzYWEzMzhjMDNjMzMiLCJpYXQiOjE3MDQ1NjM0OTMsImV4cCI6MTcwNDU2NzA5M30.y7SIHj_NW66nU9Mvc0Epa2vHUR0ifZ1KPEyUZTQYF6A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/6599a1b285e2451a31c70b46",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"6599a1b285e2451a31c70b46"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "526"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"20e-DTHNldo9WcaBBA20smxpoAu46JY\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 06 Jan 2024 19:05:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"users\": [\n        {\n            \"_id\": \"6599a13d85e2451a31c70b40\",\n            \"email\": \"simranyadav464@gmail.com\",\n            \"phone\": \"6387595779\",\n            \"name\": \"Simran Yadav\",\n            \"profileImage\": \"dfghlfd.jpg\",\n            \"role\": \"User\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6599a18f85e2451a31c70b43\",\n            \"email\": \"prakhar464@gmail.com\",\n            \"phone\": \"7017909094\",\n            \"name\": \"Prakhar Maheshwari\",\n            \"profileImage\": \"ldghlsdjfiieriwjeiwlfd.jpg\",\n            \"role\": \"User\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6599a1b285e2451a31c70b46\",\n            \"email\": \"Aman498749@gmail.com\",\n            \"phone\": \"9016709094\",\n            \"name\": \"Aman Yadav\",\n            \"profileImage\": \"fhaisfjhgoirhaginia.jpg\",\n            \"role\": \"User\",\n            \"__v\": 0\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Sign up",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk5OTEzMjhhMDMzYWEzMzhjMDNjMzMiLCJpYXQiOjE3MDQ1NjM0OTMsImV4cCI6MTcwNDU2NzA5M30.y7SIHj_NW66nU9Mvc0Epa2vHUR0ifZ1KPEyUZTQYF6A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"Aman498749@gmail.com\",\r\n    \"phone\": \"9016709094\",\r\n    \"name\": \"Aman Yadav\",\r\n    \"profileImage\": \"fhaisfjhgoirhaginia.jpg\",\r\n    \"password\": \"Ama10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Sign up",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"simranyadav464@gmail.com\",\r\n    \"phone\": \"6387595779\",\r\n    \"name\": \"Simran Yadav\",\r\n    \"profileImage\": \"dfghlfd.jpg\",\r\n    \"password\": \"Sim10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "40"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"28-7+J4ujuF1IVyrzd07WLRpzlET2Y\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 06 Jan 2024 18:51:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User created successfully.\"\n}"
+				}
+			]
+		}
+	]
+}
