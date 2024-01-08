@@ -12,7 +12,7 @@ git clone https://github.com/simran1002/GuardedProfileLocker.git
 
 2. Open the project directory
 ```bash
-cd Note-Service-API
+cd GuardedProfileLocker
 ```
 
 3. Install dependencies
